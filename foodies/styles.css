@@ -1,0 +1,75 @@
+/* Place your CSS styles in this file */
+
+h1 {
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: normal;
+    background-color: #cc7a3d;
+    border-radius: 50%;
+}
+h3{
+  text-align: center;
+}
+.intro{
+    text-align: center;
+    font-family: 'Georgia',Serif;
+    border-color: #c45335; 
+}
+.sub{
+    text-align: center;
+    font-family: 'Georgia', serif;
+    background-color: black;
+    color: #cc7a3d;
+}
+.button {
+  background-color: #51a16a;
+  border: 10px 15px;
+  color: #e6c994;
+  padding: 15px 32px;
+  text-align: center;  
+  border-radius: 30px;
+  font-size: 16px;
+  margin: 150px;
+  }
+.button:hover {
+ background-color: #e6c994;
+ color: #51a16a;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; 
+}
+.reviews{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; 
+  border-color: #51a16a;
+  background-color: #cc7a3d;  
+}
+.vl {
+  border-left: 6px solid #e6c994;
+  height: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top:200;
+}
+.right{
+  left: 60%;
+}
+.generated{
+  border-color: #1e4a28;
+  border-radius: 30%;
+  height: 600px;
+  width: max-width;
+  justify-content: center;
+  background-color: bisque;
+  border-style: groove;
+}
+.regen{
+  justify-content: center;
+  align-items: center;
+}

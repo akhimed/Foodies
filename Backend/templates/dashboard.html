@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .faded {
+            color: #999; 
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        form input[type="text"],
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        form button:hover {
+            background-color: #45a049;
+        }
+        #generatedImage {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #generatedImage img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px; /* Add some space between images */
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ name }}!</h1>
+
+        <!-- Recipe generation form -->
+        <form id="generateRecipeForm" method="POST">
+            <label for="prompt">Enter Ingredients <span class="faded">(separating them by commas, e.g., tomato, rice, chicken)</span></label>
+            <input type="text" id="prompt" name="prompt" required>
+
+            <label for="meal">What meal are you planning to prepare?</label>
+            <select id="meal" name="meal" required>
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+                <option value="Snack">Snack</option>
+                <option value="Dessert">Dessert</option>
+            </select>
+
+            <label for="cuisine">Choose a cuisine:</label>
+            <select id="cuisine" name="cuisine" required>
+                <option value="Chinese">Chinese</option>
+                <option value="Italian">Italian</option>
+                <option value="Mexican">Mexican</option>
+                <option value="Thai">Thai</option>
+                <option value="French">French</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Indian">Indian</option>
+                <option value="Mediterranean">Mediterranean</option>
+                <option value="Vietnamese">Vietnamese</option>
+                <option value="American">American</option>
+                <option value="Ethiopian">Ethiopian</option>
+            </select>
+
+            <button type="submit">Generate Recipe</button>
+        </form>
+
+        <div id="generatedRecipe"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const generateRecipeForm = document.getElementById("generateRecipeForm");
+    
+            generateRecipeForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const formData = new FormData(generateRecipeForm);
+                fetch("/generate_recipe", {
+                    method: "POST",
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const generatedRecipeElement = document.getElementById("generatedRecipe");
+                    generatedRecipeElement.innerHTML = `<p>${data.recipe}</p>`;
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>
