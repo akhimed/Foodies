@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-
+    <link rel="icon" href="{{ url_for('static', filename='foodiesimg.png') }}" type="image/png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,28 +14,77 @@
             background-color: #f0f0f0;
             color: #333;
         }
+        header {
+            background-color: #d3e0cd; /* Light sage green background for navigation bar */
+            color: black; /* Set text color to black */
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        nav a {
+            color: black; /* Set text color to black */
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background-color: #e6c994; /* Light green background for navigation buttons */
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        nav a:hover {
+            color: #e6c994; /* Light green text color on hover */
+            background-color: #cc7a3d; /* Darker green background on hover */
+            transform: translateY(-2px);
+        }
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
-        .faded {
-            color: #999; 
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 16px;
         }
+
+
+        .faded {
+            color: #999;
+        }
+
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
+
         form {
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         form label {
             display: block;
             margin-bottom: 10px;
         }
+
         form input[type="text"],
         form select {
             width: 100%;
@@ -46,6 +94,7 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+
         form button {
             background-color: #4CAF50;
             color: white;
@@ -56,30 +105,59 @@
             width: 100%;
             font-size: 16px;
         }
+
         form button:hover {
             background-color: #45a049;
         }
-        #generatedImage {
+
+        #generatedRecipes {
             margin-top: 20px;
-            text-align: center;
         }
-        #generatedImage img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
+
+         .recipe {
+            background-color: #f0f8ff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px; /* Add some space between images */
+        }
+        .recipe h3 {
+            margin-top: 0;
+        }
+        .recipe p {
+            margin-bottom: 10px;
+        }
+        .recipe ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .recipe ul li {
+            margin-bottom: 5px;
+        }
+        .recipe strong {
+            color: #4CAF50;
         }
     </style>
-    
+
 </head>
+
 <body>
+    <header>
+        <nav>
+            <a href="/home">Home</a>
+            <a href="/dashboard">Recipes Generator</a>
+            <a href="/signup">Sign Up</a>
+            <a href="/help">Help</a>
+            <a href="/login">Login</a>
+        </nav>
+    </header>
     <div class="container">
         <h1>Welcome, {{ name }}!</h1>
 
-        <!-- Recipe generation form -->
+        <!-- Add the recipe generation form here -->
         <form id="generateRecipeForm" method="POST">
-            <label for="prompt">Enter Ingredients <span class="faded">(separating them by commas, e.g., tomato, rice, chicken)</span></label>
+            <label for="prompt">Enter Ingredients <span class="faded">(separating them by commas. For example: tomato,
+                    rice, chicken)</span></label>
             <input type="text" id="prompt" name="prompt" required>
 
             <label for="meal">What meal are you planning to prepare?</label>
@@ -102,35 +180,95 @@
                 <option value="Indian">Indian</option>
                 <option value="Mediterranean">Mediterranean</option>
                 <option value="Vietnamese">Vietnamese</option>
-                <option value="American">American</option>
+                <option value="American">Realistic</option>
                 <option value="Ethiopian">Ethiopian</option>
             </select>
 
             <button type="submit">Generate Recipe</button>
         </form>
 
-        <div id="generatedRecipe"></div>
+        <div id="generatedRecipes"></div>
     </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const generateRecipeForm = document.getElementById("generateRecipeForm");
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const generateRecipeForm = document.getElementById("generateRecipeForm");
-    
-            generateRecipeForm.addEventListener("submit", function (event) {
-                event.preventDefault();
-                const formData = new FormData(generateRecipeForm);
-                fetch("/generate_recipe", {
-                    method: "POST",
-                    body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const generatedRecipeElement = document.getElementById("generatedRecipe");
-                    generatedRecipeElement.innerHTML = `<p>${data.recipe}</p>`;
-                });
+    generateRecipeForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const formData = new FormData(generateRecipeForm);
+        fetch("/generate_recipe", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            const generatedRecipesElement = document.getElementById("generatedRecipes");
+            generatedRecipesElement.innerHTML = ""; // Clear previous recipes
+            const recipes = data.recipes.slice(0, 5); // Limit to first 5 recipes
+            recipes.forEach(recipe => {
+                const recipeElement = document.createElement("div");
+                recipeElement.classList.add("recipe");
+                recipeElement.innerHTML = formatRecipeHTML(recipe);
+                generatedRecipesElement.appendChild(recipeElement); // Append recipe element to container
             });
+            if (data.recipes.length > 5) {
+                const moreOptionsElement = document.createElement("div");
+                moreOptionsElement.textContent = `More options available (${data.recipes.length - 5} more)`;
+                generatedRecipesElement.appendChild(moreOptionsElement);
+            }
         });
+    });
+});
+
+function formatRecipeHTML(recipe) {
+    // Extract and clean the title
+    const titleEnd = recipe.indexOf('\n\n**Ingredients**');
+    let title = recipe.substring(0, titleEnd).trim();
+    title = title.replace(/\*\*([^*]+)\*\*/g, '$1');  // Remove bold markdown
+
+    // Extract and format ingredients
+    const ingredientsStart = titleEnd + 2;
+    const ingredientsEnd = recipe.indexOf('\n\n**Instructions**');
+    let ingredients = recipe.substring(ingredientsStart, ingredientsEnd).trim();
+    ingredients = formatSectionHTML(ingredients.replace('**Ingredients**', ''));  // Remove redundant header
+
+    // Extract and format instructions
+    const instructionsStart = ingredientsEnd + 2;
+    let instructions = recipe.substring(instructionsStart).trim();
+    instructions = formatSectionHTML(instructions.replace('**Instructions**', ''));  // Remove redundant header
+
+    // Combine the formatted sections into HTML
+    const recipeHTML = `
+        <h3>${title}</h3>
+        <div>
+            <strong>Ingredients:</strong>
+            ${ingredients}
+        </div>
+        <div>
+            <strong>Instructions:</strong>
+            ${instructions}
+        </div>
+    `;
+
+    return recipeHTML;
+}
+
+function formatSectionHTML(section) {
+    // Split section into lines and format each line as a list item, removing any leading bullet characters
+    const items = section.split('\n').filter(line => line.trim() !== '');
+    const formattedItems = items.map(item => `<li>${item.trim().replace(/^• /, '')}</li>`);
+
+    // Combine formatted items into an unordered list
+    return `<ul>${formattedItems.join('')}</ul>`;
+}
+
+
+
+
     </script>
-    
+    <footer>
+        Foodies &copy;
+    </footer>
 </body>
+
 </html>

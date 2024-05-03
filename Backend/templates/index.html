@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flask Web App</title>
+    <link rel="icon" href="{{ url_for('static', filename='foodiesimg.png') }}" type="image/png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,25 +15,72 @@
             background-color: #f0f0f0;
             color: #333;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 16px;
+        }
+
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
+
         form {
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        header {
+            background-color: #d3e0cd; /* Light sage green background for navigation bar */
+            color: black; /* Set text color to black */
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        nav a {
+            color: black; /* Set text color to black */
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background-color: #e6c994; /* Light green background for navigation buttons */
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        nav a:hover {
+            color: #e6c994; /* Light green text color on hover */
+            background-color: #cc7a3d; /* Darker green background on hover */
+            transform: translateY(-2px);
+        }
         form label {
             display: block;
             margin-bottom: 10px;
         }
+
         form input[type="text"],
         form select {
             width: 100%;
@@ -41,6 +90,7 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+
         form button {
             background-color: #4CAF50;
             color: white;
@@ -51,28 +101,34 @@
             width: 100%;
             font-size: 16px;
         }
+
         form button:hover {
             background-color: #45a049;
         }
+
         #generatedImage {
             margin-top: 20px;
             text-align: center;
         }
+
         #generatedImage img {
             max-width: 100%;
             height: auto;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px; /* Add some space between images */
+            margin-bottom: 10px;
+            /* Add some space between images */
         }
+
         #loginForm {
-        max-width: 400px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
         input[type="text"],
         input[type="password"] {
             width: calc(100% - 20px);
@@ -82,12 +138,16 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-            color: #999; /* Faded text color */
+            color: #999;
+            /* Faded text color */
         }
+
         input[type="text"]::placeholder,
         input[type="password"]::placeholder {
-            color: #999; /* Faded placeholder text color */
+            color: #999;
+            /* Faded placeholder text color */
         }
+
         button[type="submit"] {
             width: calc(100% - 20px);
             height: 40px;
@@ -100,26 +160,61 @@
             font-size: 16px;
             box-sizing: border-box;
         }
+
+        .signup-button {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
+    <header>
+        <nav>
+            <a href="/home">Home</a>
+            <a href="/dashboard">Recipes Generator</a>
+            <a href="/signup">Sign Up</a>
+            <a href="/help">Help</a>
+            <a href="/login">Login</a>
+        </nav>
+    </header>
     <div class="container">
         <h1>User Login</h1>
 
-        <form id="loginForm" action="/login" method="POST">
+        <!-- <form id="loginForm" action="/login" method="POST">
             <input type="text" id="name" name="name" placeholder="Username" required><br><br>
             <input type="password" id="password" name="password" placeholder="Password" required><br><br>
             <button type="submit">Login</button>
+        </form> -->
+
+
+        <form action="/login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">Login</button>
         </form>
+        
+
+
+
+        <a href="/signup" class="signup-button">Sign Up</a>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const loginForm = document.getElementById("loginForm");
+            const loginForm = document.getElementById("form");
 
             loginForm.addEventListener("submit", function (event) {
                 // Example: Client-side validation
-                const username = document.getElementById("name").value;
+                const username = document.getElementById("username").value;
                 const password = document.getElementById("password").value;
 
                 if (!username || !password) {
@@ -129,5 +224,9 @@
             });
         });
     </script>
+        <footer>
+            Foodies &copy;
+        </footer>
 </body>
+
 </html>
